@@ -26,6 +26,9 @@ module.exports.getActiveQuizzes = async (req, res) => {
     startDate: { $lte: currDate },
     endDate: { $gte: currDate },
   });
+  if (activeQuiz.length===0) {
+    return res.status(404).json({ error: "No active quiz found" });
+  }
   const quizzesWithStatus = activeQuiz.map((quiz) => {
     const { rightAnswer, ...quizWithoutRightAnswer } = quiz.toObject();
     return { ...quizWithoutRightAnswer, status: "active" };
@@ -75,7 +78,7 @@ module.exports.getAllQuizzes = async (req, res) => {
         quiz.startDate <= currentTime && quiz.endDate >= currentTime;
       return {
         ...quiz.toObject(),
-        status: isActive ? "active" : "finished",
+        status: isActive ? "active" : "finished/not active",
       };
     });
     res.status(200).json(quizzesWithStatus);

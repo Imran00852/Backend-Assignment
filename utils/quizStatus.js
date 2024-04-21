@@ -10,7 +10,7 @@ cron.schedule("* * * * *", async () => {
     for (const quiz of allQuizzes) {
       const isActive =
         quiz.startDate <= currentDate && quiz.endDate >= currentDate;
-      quiz.status = isActive ? "active" : "finished";
+      quiz.status = isActive ? "active" : "finished/not active";
     }
   } catch (error) {
     console.error("Error updating quiz statuses:", error);
